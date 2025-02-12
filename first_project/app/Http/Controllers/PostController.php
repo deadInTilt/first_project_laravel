@@ -8,26 +8,24 @@ use App\Models\Post;
 class PostController extends Controller
 {
     public function index() {
-        $posts = Post::where('is_published', 1)->get();
-        foreach ($posts as $titles) {
-            dump($titles->title);
-        }
+        $posts = Post::all();
+        return view('posts', compact('posts'));
     }
 
     public function create() {
         $postsArr = [
             [
-                'title' =>' title from vscode',
-                'content' => 'content from vscode',
-                'image' => 'image from vscode',
-                'likes' => '999999',
+                'title' =>'My post 3',
+                'content' => 'My content 3',
+                'image' => 'image.jpg',
+                'likes' => '5',
                 'is_published' =>' 1',
             ],
             [
-                'title' =>' another title from vscode',
-                'content' => 'another content from vscode',
-                'image' => 'another image from vscode',
-                'likes' => '999999',
+                'title' =>'My post 4',
+                'content' => 'My content 4',
+                'image' => 'image.jpg',
+                'likes' => '7',
                 'is_published' =>' 1',
             ],
         ];
@@ -40,21 +38,58 @@ class PostController extends Controller
     }
 
     public function update() {
-        $post = Post::find(6);
+        $post = Post::find(8);
         
         $post->update([
-            'title' => 'updated',
-            'content' => 'updated',
-            'image' => 'updated',
-            'likes' => 11111,
             'is_published' => 0,
         ]);
+
+        dd('uodated');
+
     }
 
     public function delete() {
-        $post = Post::find(3);
+        $post = Post::find(7);
         $post->delete();
 
         dd('deleted');
+    }
+
+    public function firstOrCreate() 
+    {
+        $post = Post::find(1);
+
+        $anotherPost = 
+        [
+            'title' =>'New post',
+            'content' => 'New content',
+            'image' => 'image.jpg',
+            'likes' => '777',
+            'is_published' =>' 1',
+        ];
+
+        $post = Post::firstOrCreate([
+            'title' =>'New post',
+        ],[
+            'title' =>'New post',
+            'content' => 'New content',
+            'image' => 'image.jpg',
+            'likes' => '777',
+            'is_published' =>' 1',
+
+        ]);
+        dump($post->content);
+        dd('finished');
+    }
+
+    public function contacts() {
+        return view('contact');
+    }
+
+    public function main() {
+        return view('main');
+    }
+    public function about() {
+        return view('about');
     }
 }

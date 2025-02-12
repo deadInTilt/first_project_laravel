@@ -24,10 +24,18 @@ Route::get('/offers', function() {
 
 Route::get('/subscribes', [AllSubscribes::class, 'index']);
 
-Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts', [PostController::class, 'index'])->name('post.index');
 
 Route::get('/posts/create', [PostController::class, 'create']);
 
 Route::get('/posts/update', [PostController::class, 'update']);
 
 Route::get('/posts/delete', [PostController::class, 'delete']);
+
+Route::get('/posts/first_or_create', [PostController::class, 'firstOrCreate']);
+
+Route::get('/about', [PostController::class, 'about'])->name('post.about');
+
+Route::get('/main', [PostController::class, 'main'])->name('post.main');
+
+Route::get('/contacts', [PostController::class, 'contacts'])->name('post.contacts');
