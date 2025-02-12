@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class MyPageController extends Controller
+class AboutController extends Controller
 {
     public function index() {
-        return 'this is my page';
+        return view('about');
     }
 }

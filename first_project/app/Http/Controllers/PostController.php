@@ -7,34 +7,31 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function index() {
+    public function index() 
+    {
+
         $posts = Post::all();
-        return view('posts', compact('posts'));
+
+        return view('post.index', compact('posts'));
     }
 
-    public function create() {
-        $postsArr = [
-            [
-                'title' =>'My post 3',
-                'content' => 'My content 3',
-                'image' => 'image.jpg',
-                'likes' => '5',
-                'is_published' =>' 1',
-            ],
-            [
-                'title' =>'My post 4',
-                'content' => 'My content 4',
-                'image' => 'image.jpg',
-                'likes' => '7',
-                'is_published' =>' 1',
-            ],
-        ];
+    public function create() 
+    {
+        return view('post.create');
 
-        foreach ($postsArr as $item) {
-            Post::create($item);
-        }
+    }
 
-        dd('created');
+    public function store() 
+    {
+        $data = request()->validate([
+            'title' => 'string',
+            'post_content' => 'string',
+            'image' => 'string',
+        ]);
+
+        Post::create($data);
+
+        return redirect()->route('post.index');
     }
 
     public function update() {
@@ -80,16 +77,5 @@ class PostController extends Controller
         ]);
         dump($post->content);
         dd('finished');
-    }
-
-    public function contacts() {
-        return view('contact');
-    }
-
-    public function main() {
-        return view('main');
-    }
-    public function about() {
-        return view('about');
     }
 }
