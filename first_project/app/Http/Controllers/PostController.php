@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Category;
 
 class PostController extends Controller
 {
     public function index() 
     {
 
-        $posts = Post::all();
+        $post = Post::find(1);
 
-        return view('post.index', compact('posts'));
+        dd($post->category);
     }
 
     public function create() 
@@ -34,22 +35,34 @@ class PostController extends Controller
         return redirect()->route('post.index');
     }
 
-    public function update() {
-        $post = Post::find(8);
-        
-        $post->update([
-            'is_published' => 0,
+    public function show(Post $post) 
+    {
+        return view ('post.show', compact('post'));
+    }
+
+    public function edit(Post $post) 
+    {
+        return view ('post.edit', compact('post'));
+    }
+
+    public function update(Post $post) {
+
+        $data = request()->validate([
+            'title' => 'string',
+            'post_content' => 'string',
+            'image' => 'string',
         ]);
 
-        dd('uodated');
+        $post->update($data);
+
+        return redirect()->route('post.show', $post->id);
 
     }
 
-    public function delete() {
-        $post = Post::find(7);
+    public function destroy(Post $post) 
+    {
         $post->delete();
-
-        dd('deleted');
+        return redirect()->route('post.index');
     }
 
     public function firstOrCreate() 

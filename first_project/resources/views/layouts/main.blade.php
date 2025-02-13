@@ -5,7 +5,7 @@
     <meta name="viewpoint"
         content="width=devie-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="X-UA-Cmpatible" content="ie=edge">
-    <title>Documents</title>    
+    <title>It's My Blog</title>    
 </head>
 <body>
 <div>
