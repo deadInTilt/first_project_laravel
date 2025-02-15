@@ -26,6 +26,18 @@
         @endforeach
       </select>
     </div>
+    <div>
+      <label for="tags">Tags</label>
+        <select class="form-select" multiple aria-label="tags" name="tags[]">
+          @foreach($tags as $tag)
+          <option
+            @foreach($post->tag as $postTag)
+            {{ $tag->id === $postTag->id ? ' selected' : '' }}
+            @endforeach
+          value="{{ $tag->id }}"> {{ $tag->title }}</option>
+          @endforeach
+        </select>
+    </div>
     <button type="submit" class="btn btn-primary">Update</button>
   </form>
   <form action="{{ route('post.delete', $post->id) }}" method="post">
