@@ -7,7 +7,7 @@
         @endforeach
 </div>
 <div>
-    {{ $posts->links() }}
+    {{ $posts->withQueryString()->links() }}
 </div>
 <div>
     <button type="button" class="btn btn-primary mb-3"><a href="{{ route('post.create') }}">Add another one</a></button>
