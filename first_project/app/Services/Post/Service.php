@@ -14,6 +14,8 @@ class Service
         $post = Post::firstOrCreate($data);
                 
         $post->tag()->attach($tags);
+
+        return $post;
     }
 
     public function update($post, $data)

@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use App\Http\Controllers\Admin\Post\AdminController;
 use App\Http\Controllers\Post\IndexController;
 use App\Http\Controllers\Post\CreateController;
@@ -8,10 +13,10 @@ use App\Http\Controllers\Post\ShowController;
 use App\Http\Controllers\Post\EditController;
 use App\Http\Controllers\Post\UpdateController;
 use App\Http\Controllers\Post\DestroyController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ContactsController;
+
 
 
 Route::get('/', function () {
@@ -28,12 +33,33 @@ Route::group(['namespace' => 'Post'], function() {
     Route::delete('/posts/{post}', [DestroyController::class, '__invoke'])->name('post.delete');
 });
 
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::group(['namespace' => 'Post'], function () {
         Route::get('/post', [AdminController::class, '__invoke'])->name('admin.post.index');
     });
 });
 
-Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 
-Route::get('/contacts', [ContactsController::class, 'index'])->name('contacts.index');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
